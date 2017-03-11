@@ -41,7 +41,7 @@
     <TextView
         android:id="@+id/id_affect"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="#ffffff"
         android:text="1" />
 
