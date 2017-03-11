@@ -29,7 +29,7 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_city.setText("地区："+firstFragment.cityAirResult.getCity());
+        holder.tv_city.setText(firstFragment.cityAirResult.getCity());
         holder.tv_aqi.setText("AQI："+firstFragment.cityAirResult.getAqi());
         holder.tv_quality.setText("空气质量状况："+firstFragment.cityAirResult.getQuality());
         holder.tv_pm2_5.setText("PM2.5："+firstFragment.cityAirResult.getPm2_5());
@@ -41,10 +41,12 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
     @Override
     public int getItemCount() {
 
-        if(firstFragment.cityAirAll.getStatus() == null){
-            return  0;
+        if("0".equals(firstFragment.cityAirAll.getStatus())){
+            return 1;
         }
-        return 1;
+
+        return 0;
+
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="#ffffff"
+        android:textSize="18dp"
         android:text="1" />
     <TextView
         android:id="@+id/id_aqi"
@@ -40,7 +41,7 @@
     <TextView
         android:id="@+id/id_affect"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:background="#ffffff"
         android:text="1" />
 

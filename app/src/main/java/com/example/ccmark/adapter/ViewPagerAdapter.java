@@ -1,4 +1,4 @@
-package com.example.ccmark.aihuxi;
+package com.example.ccmark.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -23,8 +23,7 @@ public class TrendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trend, null);
-        TextView tvInfo = (TextView) view.findViewById(R.id.tvInfo);
-        tvInfo.setText(getArguments().getString("info"));
+
 
         return view;
     }
