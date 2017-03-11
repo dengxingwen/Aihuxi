@@ -1,2 +1,2 @@
 # Aihuxi
-爱呼吸--姜力
+爱呼吸--JIANGLI
