@@ -85,5 +85,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(TrendFragment.newInstance("2"));
         adapter.addFragment(TopFragment.newInstance("3"));
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
     }
 }

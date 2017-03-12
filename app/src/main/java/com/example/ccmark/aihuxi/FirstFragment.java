@@ -1,10 +1,12 @@
 package com.example.ccmark.aihuxi;
 
+import android.nfc.tech.TagTechnology;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,9 @@ import retrofit2.Retrofit;
 
 public class FirstFragment extends Fragment {
 
+
+    private static final String TAG = "FirstFragment";
+
     private RecyclerView mRecyclerView;
     public List<Air> mDatas;
     private HomeAdapter mAdapter;
@@ -50,14 +55,22 @@ public class FirstFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        Log.d(TAG, "onCreate: ");
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView: ");
+    }
+    
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, null);
 
+        Log.d(TAG, "onCreateView: ");
 
         initData();
 
