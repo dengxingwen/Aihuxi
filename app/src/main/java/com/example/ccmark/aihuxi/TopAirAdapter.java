@@ -1,25 +1,26 @@
 package com.example.ccmark.aihuxi;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ccmark.bean.Air;
+
 
 /**
  * Created by ccmark on 2017/3/10.
  */
-class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> implements View.OnClickListener{
+class TopAirAdapter extends RecyclerView.Adapter<TopAirAdapter.MyViewHolder> implements View.OnClickListener{
 
-    private static final String TAG = "HomeAdapter";
+    private static final String TAG = "TopAirAdapter";
 
-    private FirstFragment firstFragment;
+    private TopFragment topFragment;
 
 
-    public HomeAdapter(FirstFragment firstFragment) {
-        this.firstFragment = firstFragment;
+    public TopAirAdapter(TopFragment topFragment) {
+        this.topFragment = topFragment;
     }
 
 
@@ -27,13 +28,13 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
 
     //define interface
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , int data);
+        void onItemClick(View view, int data);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_top, parent, false);
 
         MyViewHolder holder = new MyViewHolder(view);
 
@@ -44,12 +45,10 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_city.setText(firstFragment.cityAirResult.getCity());
-        holder.tv_aqi.setText("AQI："+firstFragment.cityAirResult.getAqi());
-        holder.tv_quality.setText("空气质量状况："+firstFragment.cityAirResult.getQuality());
-        holder.tv_pm2_5.setText("PM2.5："+firstFragment.cityAirResult.getPm2_5());
-        holder.tv_level.setText("级别："+firstFragment.cityAirResult.getAqiinfo().getLevel());
-        holder.tv_affect.setText(firstFragment.cityAirResult.getAqiinfo().getAffect());
+        holder.tv_index.setText(position+1+"");
+        holder.tv_city.setText(topFragment.resultdata.get(position).getArea());
+        holder.tv_quality.setText(topFragment.resultdata.get(position).getQuality());
+        holder.tv_value.setText(topFragment.resultdata.get(position).getAqi()+"");
 
         holder.itemView.setTag(position);
     }
@@ -69,32 +68,27 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
     @Override
     public int getItemCount() {
 
-        if("0".equals(firstFragment.cityAirAll.getStatus())){
-            return 1;
+        if(topFragment.canUpdata){
+            return topFragment.resultdata.size();
         }
-
         return 0;
 
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
+        TextView tv_index;
         TextView tv_city;
-        TextView tv_aqi;
         TextView tv_quality;
-        TextView tv_pm2_5;
-        TextView tv_level;
-        TextView tv_affect;
-
+        TextView tv_value;
 
         public MyViewHolder(View view) {
             super(view);
+
+            tv_index = (TextView) view.findViewById(R.id.id_index);
             tv_city = (TextView) view.findViewById(R.id.id_city);
-            tv_aqi = (TextView) view.findViewById(R.id.id_aqi);
             tv_quality = (TextView) view.findViewById(R.id.id_quality);
-            tv_pm2_5 = (TextView) view.findViewById(R.id.id_pm2_5);
-            tv_level = (TextView) view.findViewById(R.id.id_level);
-            tv_affect = (TextView) view.findViewById(R.id.id_affect);
+            tv_value = (TextView) view.findViewById(R.id.id_value);
 
         }
     }

@@ -3,10 +3,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_recyclerview"
         android:divider="#666666"
         android:dividerHeight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

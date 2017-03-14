@@ -11,15 +11,15 @@ import java.util.Map;
 
 public class AirAll {
 
-   private String showapi_res_code;
+   private int showapi_res_code;
    private String showapi_res_error;
    private AirBody showapi_res_body;
 
-   public String getShowapi_res_code() {
+   public int getShowapi_res_code() {
       return showapi_res_code;
    }
 
-   public void setShowapi_res_code(String showapi_res_code) {
+   public void setShowapi_res_code(int showapi_res_code) {
       this.showapi_res_code = showapi_res_code;
    }
 

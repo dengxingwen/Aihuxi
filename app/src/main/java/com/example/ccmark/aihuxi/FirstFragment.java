@@ -1,9 +1,10 @@
 package com.example.ccmark.aihuxi;
 
-import android.nfc.tech.TagTechnology;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,11 +37,12 @@ public class FirstFragment extends Fragment {
     private static final String TAG = "FirstFragment";
 
     private RecyclerView mRecyclerView;
-    public List<Air> mDatas;
     private HomeAdapter mAdapter;
 
     public CityAirAll cityAirAll;
     public CityAirResult cityAirResult;
+
+    public SwipeRefreshLayout swipeRefreshLayout;
 
 
     public static FirstFragment newInstance(String info) {
@@ -74,9 +76,30 @@ public class FirstFragment extends Fragment {
 
         initData();
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light,android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mAdapter = new HomeAdapter(this));
+        mAdapter = new HomeAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new HomeAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int data) {
+
+                Intent intent = new Intent(getContext(),QualityDetail.class);
+                startActivity(intent);
+
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCityAirData();
+            }
+        });
 
         getData();
         return view;
@@ -84,8 +107,7 @@ public class FirstFragment extends Fragment {
 
 
     public void getData(){
-        //获取空气质量排行榜
-        //getAirTopData();
+
         //获取城市空气质量数据
         getCityAirData();
     }
@@ -94,48 +116,9 @@ public class FirstFragment extends Fragment {
     {
         cityAirAll = new CityAirAll();
         cityAirResult = new CityAirResult();
-        //mDatas = new ArrayList<Air>();
 
     }
 
-
-
-   //获取空气质量排行榜
-   public void getAirTopData(){
-       Retrofit retrofit = new Retrofit.Builder()
-               .baseUrl("http://ali-pm25.showapi.com")
-               .build();
-
-       AirApi airapi = retrofit.create(AirApi.class);
-       Call<ResponseBody> call = airapi.getAirData(NetApi.APPCODE);
-
-       call.enqueue(new Callback<ResponseBody>() {
-           @Override
-           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-               try {
-
-                   Gson gson = new Gson();
-                   AirAll airall = gson.fromJson(response.body().string(),AirAll.class);
-                   mDatas = airall.getShowapi_res_body().getList();
-                   mAdapter.notifyDataSetChanged();
-
-               }catch (IOException e) {
-                   e.printStackTrace();
-               }
-
-
-           }
-
-           @Override
-           public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-           }
-       });
-
-
-
-   }
 
     public void getCityAirData(){
 
@@ -156,6 +139,7 @@ public class FirstFragment extends Fragment {
                         if ("0".equals(cityAirAll.getStatus())){
                             cityAirResult = cityAirAll.getResult();
                             mAdapter.notifyDataSetChanged();
+                            swipeRefreshLayout.setRefreshing(false);
                         }
 
                     }
@@ -169,7 +153,7 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

@@ -19,6 +19,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".QualityDetail"
+                  android:label="详情">
+        </activity>
+
     </application>
 
 

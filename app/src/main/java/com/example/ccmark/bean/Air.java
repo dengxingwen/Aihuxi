@@ -1,10 +1,12 @@
 package com.example.ccmark.bean;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by ccmark on 2017/3/10.
  */
 
-public class Air {
+public class Air implements Comparable<Air>{
 
     private int so2;
     private int o3;
@@ -13,6 +15,9 @@ public class Air {
     private String  quality;
     private int pm10;
     private String ct;
+    private int pm2_5;
+
+
 
     public int getSo2() {
         return so2;
@@ -69,4 +74,18 @@ public class Air {
     public void setCt(String ct) {
         this.ct = ct;
     }
+
+    public int getPm2_5() {
+        return pm2_5;
+    }
+
+    public void setPm2_5(int pm2_5) {
+        this.pm2_5 = pm2_5;
+    }
+
+    @Override
+    public int compareTo(@NonNull Air o) {
+        return this.pm2_5 - o.getPm2_5();
+    }
+
 }
