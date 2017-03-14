@@ -43,10 +43,10 @@ class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyV
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tv_index.setText(position+1+"");
-        holder.tv_city.setText(position+1+"");
-        holder.tv_quality.setText(position+1+"");
-        holder.tv_value.setText(position+1+"");
+//        holder.tv_index.setText(position+1+"");
+//        holder.tv_city.setText(position+1+"");
+//        holder.tv_quality.setText(position+1+"");
+//        holder.tv_value.setText(position+1+"");
 
         holder.itemView.setTag(position);
     }
@@ -79,10 +79,10 @@ class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyV
         public MyViewHolder(View view) {
             super(view);
 
-            tv_index = (TextView) view.findViewById(R.id.id_index);
-            tv_city = (TextView) view.findViewById(R.id.id_city);
-            tv_quality = (TextView) view.findViewById(R.id.id_quality);
-            tv_value = (TextView) view.findViewById(R.id.id_value);
+//            tv_index = (TextView) view.findViewById(R.id.id_index);
+//            tv_city = (TextView) view.findViewById(R.id.id_city);
+//            tv_quality = (TextView) view.findViewById(R.id.id_quality);
+//            tv_value = (TextView) view.findViewById(R.id.id_value);
 
         }
     }
