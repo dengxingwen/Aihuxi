@@ -17,7 +17,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="160dp"
                 android:padding="10dp"
                 android:background="#ffffff"
                 android:focusable="true"
@@ -48,13 +48,13 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:padding="4dp"
+                    android:padding="8dp"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="0dp"
                         android:layout_weight="2"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:tint="@color/colorPrimary"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/air_quality_icon"
@@ -73,7 +73,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:background="#f5f5f5"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
@@ -196,10 +196,9 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:orientation="vertical"
                 android:layout_marginTop="5dp"
-                android:padding="10dp"
                 android:background="#ffffff">
             <TextView
                 android:layout_width="match_parent"
@@ -266,13 +265,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#ffffff"
-                android:layout_marginTop="10dp">
+                android:background="#f5f5f5"
+                android:layout_marginTop="5dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:gravity="center"
-                    android:text="发现周边"
+                    android:text="关注周边"
+                    android:background="#ffffff"
                     android:textSize="14dp"/>
 
                 <android.support.v7.widget.RecyclerView
@@ -280,12 +280,12 @@
                     android:divider="#666666"
                     android:dividerHeight="10dp"
                     android:background="#f5f5f5"
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
 
             </LinearLayout>
-
 
 
         </LinearLayout>
