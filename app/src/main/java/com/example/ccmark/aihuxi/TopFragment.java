@@ -41,6 +41,7 @@ public class TopFragment extends Fragment {
     private TopAirAdapter mAdapter;
     public AirAll airall;
     public boolean canUpdata = false;
+    public int segmentedGroupIndex = 0;
 
     public List<Air> resultdata;
     public List<Air> resultdata_AQI;
@@ -73,10 +74,12 @@ public class TopFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
                     case R.id.button1:
+                        segmentedGroupIndex = 0;
                         resultdata = resultdata_AQI;
                         mAdapter.notifyDataSetChanged();
                         return;
                     case R.id.button2:
+                        segmentedGroupIndex = 1;
                         resultdata = resultdata_PM2_5;
                         mAdapter.notifyDataSetChanged();
                         return;

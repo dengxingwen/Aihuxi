@@ -48,7 +48,12 @@ class TopAirAdapter extends RecyclerView.Adapter<TopAirAdapter.MyViewHolder> imp
         holder.tv_index.setText(position+1+"");
         holder.tv_city.setText(topFragment.resultdata.get(position).getArea());
         holder.tv_quality.setText(topFragment.resultdata.get(position).getQuality());
-        holder.tv_value.setText(topFragment.resultdata.get(position).getAqi()+"");
+        if (topFragment.segmentedGroupIndex == 0){
+            holder.tv_value.setText(topFragment.resultdata.get(position).getAqi()+"");
+        }else {
+            holder.tv_value.setText(topFragment.resultdata.get(position).getPm2_5()+"");
+        }
+
 
         holder.itemView.setTag(position);
     }

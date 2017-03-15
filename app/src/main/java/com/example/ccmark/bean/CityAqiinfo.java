@@ -1,10 +1,12 @@
 package com.example.ccmark.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by ccmark on 2017/3/11.
  */
 
-public class CityAqiinfo {
+public class CityAqiinfo implements Serializable{
     private String level;
     private String color;
     private String affect;

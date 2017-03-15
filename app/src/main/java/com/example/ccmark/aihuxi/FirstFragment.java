@@ -22,6 +22,7 @@ import com.example.ccmark.bean.CityAirResult;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -89,6 +90,9 @@ public class FirstFragment extends Fragment {
             public void onItemClick(View view, int data) {
 
                 Intent intent = new Intent(getContext(),QualityDetail.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("resultdata", cityAirResult);
+                intent.putExtras(bundle);
                 startActivity(intent);
 
             }

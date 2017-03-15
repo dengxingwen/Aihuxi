@@ -1,10 +1,13 @@
 package com.example.ccmark.bean;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by ccmark on 2017/3/11.
  */
 
-public class CityAirResult {
+public class CityAirResult implements Serializable{
 
     private String cityid;
     private String city;
@@ -34,7 +37,7 @@ public class CityAirResult {
     private String timepoint;
 
     private CityAqiinfo aqiinfo;
-
+    private List<CityAirPosition> position;
 
     public String getCityid() {
         return cityid;
@@ -252,38 +255,12 @@ public class CityAirResult {
         this.aqiinfo = aqiinfo;
     }
 
+    public List<CityAirPosition> getPosition() {
+        return position;
+    }
 
-
-
-
-
-//    "cityid":"1",
-//            "city":"北京",
-//            "so2":"10",
-//            "so224":"19",
-//            "no2":"21",
-//            "no224":"67",
-//            "co":"0.450",
-//            "co24":"0.990",
-//            "o3":"90",
-//            "o38":"35",
-//            "o324":"38",
-//            "pm10":"34",
-//            "pm1024":"93",
-//            "pm2_5":"26",
-//            "pm2_524":"58",
-//            "iso2":"4",
-//            "ino2":"11",
-//            "ico":"5",
-//            "io3":"29",
-//            "io38":"18",
-//            "ipm10":"33",
-//            "ipm2_5":"38",
-//            "aqi":"38",
-//            "primarypollutant":"PM2.5",
-//            "quality":"优",
-//            "timepoint":"2017-03-11 13:00:00",
-//            "aqiinfo":Object{...},
-//            "position":Array[12]
+    public void setPosition(List<CityAirPosition> position) {
+        this.position = position;
+    }
 
 }

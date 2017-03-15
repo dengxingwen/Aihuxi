@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Log.d(TAG, "onCreate: ");
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -92,4 +94,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
     }
+
+
+
 }
