@@ -26,7 +26,7 @@
         android:text="发现好空气"
         android:gravity="center"
         android:textSize="20dp"
-        android:textStyle="italic"
+        android:textStyle="normal"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:textColor="@color/colorPrimary"/>

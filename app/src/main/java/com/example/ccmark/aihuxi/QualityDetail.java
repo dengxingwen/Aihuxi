@@ -15,7 +15,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ccmark.NetApi.NetApi;
+import com.example.ccmark.api.WeatherApi;
 import com.example.ccmark.bean.CityAirResult;
+import com.example.ccmark.bean.WeatherAll;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by ccmark on 2017/3/13.
@@ -25,6 +34,7 @@ public class QualityDetail extends AppCompatActivity {
 
     private TextView tv_city_name;
     private TextView tv_city_wendu;
+    private TextView tv_city_weather;
     private ImageView img_city_id_weather_img;
     private TextView tv_city_quality;
     private TextView tv_city_aqi;
@@ -70,11 +80,13 @@ public class QualityDetail extends AppCompatActivity {
 
         initView();
         updataView();
+        getWeatherData();
     }
 
     public void initView(){
         tv_city_name = (TextView) findViewById(R.id.id_cityname);
         tv_city_wendu = (TextView) findViewById(R.id.id_city_wendu);
+        tv_city_weather = (TextView) findViewById(R.id.id_city_weather);
         img_city_id_weather_img = (ImageView) findViewById(R.id.id_weather_img);;
         tv_city_quality = (TextView) findViewById(R.id.id_city_quality);
         tv_city_aqi = (TextView) findViewById(R.id.id_city_aqi);
@@ -114,6 +126,34 @@ public class QualityDetail extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getWeatherData(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ali-weather.showapi.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WeatherApi weatherApi = retrofit.create(WeatherApi.class);
+        Call<WeatherAll> call = weatherApi.getCityWeatherData(NetApi.APPCODE,"北京");
+        call.enqueue(new Callback<WeatherAll>() {
+            @Override
+            public void onResponse(Call<WeatherAll> call, Response<WeatherAll> response) {
+
+                WeatherAll weatherAll = response.body();
+                System.out.println(weatherAll.getShowapi_res_code());
+                tv_city_wendu.setText(weatherAll.getShowapi_res_body().getHourList().get(0).getTemperature()+"℃");
+                tv_city_weather.setText(weatherAll.getShowapi_res_body().getHourList().get(0).getWeather());
+            }
+
+            @Override
+            public void onFailure(Call<WeatherAll> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
 }

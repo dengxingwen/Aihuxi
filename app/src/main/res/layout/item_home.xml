@@ -6,38 +6,66 @@
     android:background="@drawable/corners_bg"
     android:padding="15dp"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/id_city"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#ffffff"
-        android:textSize="18dp"
-        android:text="1" />
-    <TextView
-        android:id="@+id/id_aqi"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#ffffff"
-        android:text="1" />
+            <TextView
+                android:id="@+id/id_city"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:textSize="18dp"
+                android:text="1" />
+            <TextView
+                android:id="@+id/id_aqi"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:text="1" />
+            <TextView
+                android:id="@+id/id_pm2_5"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:text="1" />
+            <TextView
+                android:id="@+id/id_level"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#ffffff"
+                android:text="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/id_main_weather"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="13du" />
+        </LinearLayout>
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/id_quality"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="#ffffff"
         android:text="1" />
-    <TextView
-        android:id="@+id/id_pm2_5"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#ffffff"
-        android:text="1" />
-    <TextView
-        android:id="@+id/id_level"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#ffffff"
-        android:text="1" />
+
     <TextView
         android:id="@+id/id_affect"
         android:layout_width="match_parent"

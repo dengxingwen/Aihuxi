@@ -15,10 +15,12 @@ import android.view.ViewGroup;
 import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.api.AirApi;
 import com.example.ccmark.api.CityAirData;
+import com.example.ccmark.api.WeatherApi;
 import com.example.ccmark.bean.Air;
 import com.example.ccmark.bean.AirAll;
 import com.example.ccmark.bean.CityAirAll;
 import com.example.ccmark.bean.CityAirResult;
+import com.example.ccmark.bean.WeatherAll;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class FirstFragment extends Fragment {
@@ -44,6 +47,8 @@ public class FirstFragment extends Fragment {
     public CityAirResult cityAirResult;
 
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    public WeatherAll weatherAll;
 
 
     public static FirstFragment newInstance(String info) {
@@ -114,6 +119,7 @@ public class FirstFragment extends Fragment {
 
         //获取城市空气质量数据
         getCityAirData();
+
     }
 
     protected void initData()
@@ -142,8 +148,8 @@ public class FirstFragment extends Fragment {
                         cityAirAll = gson.fromJson(response.body().string(),CityAirAll.class);
                         if ("0".equals(cityAirAll.getStatus())){
                             cityAirResult = cityAirAll.getResult();
-                            mAdapter.notifyDataSetChanged();
-                            swipeRefreshLayout.setRefreshing(false);
+                            getWeatherData();
+
                         }
 
                     }
@@ -157,6 +163,35 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    public void getWeatherData(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ali-weather.showapi.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        WeatherApi weatherApi = retrofit.create(WeatherApi.class);
+        Call<WeatherAll> call = weatherApi.getCityWeatherData(NetApi.APPCODE,"北京");
+        call.enqueue(new Callback<WeatherAll>() {
+            @Override
+            public void onResponse(Call<WeatherAll> call, Response<WeatherAll> response) {
+
+                weatherAll = response.body();
+                System.out.println(weatherAll.getShowapi_res_code());
+                mAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+            @Override
+            public void onFailure(Call<WeatherAll> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

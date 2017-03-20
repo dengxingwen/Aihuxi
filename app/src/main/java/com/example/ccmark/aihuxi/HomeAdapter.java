@@ -51,6 +51,8 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
         holder.tv_level.setText("级别："+firstFragment.cityAirResult.getAqiinfo().getLevel());
         holder.tv_affect.setText(firstFragment.cityAirResult.getAqiinfo().getAffect());
 
+        holder.tv_weather.setText(firstFragment.weatherAll.getShowapi_res_body().getHourList().get(0).getTemperature()+"℃");
+
         holder.itemView.setTag(position);
     }
 
@@ -86,6 +88,8 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
         TextView tv_level;
         TextView tv_affect;
 
+        TextView tv_weather;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -95,6 +99,8 @@ class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> impleme
             tv_pm2_5 = (TextView) view.findViewById(R.id.id_pm2_5);
             tv_level = (TextView) view.findViewById(R.id.id_level);
             tv_affect = (TextView) view.findViewById(R.id.id_affect);
+
+            tv_weather = (TextView) view.findViewById(R.id.id_main_weather);
 
         }
     }
