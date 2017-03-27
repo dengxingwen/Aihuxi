@@ -373,14 +373,22 @@
                     android:text="关注周边"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/id_recyclerview_nearby"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#f5f5f5"
-                    android:divider="#666666"
-                    android:dividerHeight="10dp" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/id_recyclerview_nearby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#f5f5f5"
+                        android:divider="#666666"
+                        android:layout_marginBottom="5dp"
+                        android:dividerHeight="5dp" />
+
+                </RelativeLayout>
+
+
 
 
             </LinearLayout>

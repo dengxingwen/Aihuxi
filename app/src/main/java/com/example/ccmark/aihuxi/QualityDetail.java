@@ -1,17 +1,12 @@
 package com.example.ccmark.aihuxi;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,7 +43,7 @@ public class QualityDetail extends AppCompatActivity {
     private TextView tv_city_measure;
 
     private RecyclerView mRecyclerView;
-    private CItyAirDetailAdapter mAdapter;
+    private CityAirDetailAdapter mAdapter;
 
     public CityAirResult cityAirResult;
 
@@ -75,7 +70,7 @@ public class QualityDetail extends AppCompatActivity {
             }
         });
 
-        mAdapter = new CItyAirDetailAdapter(this);
+        mAdapter = new CityAirDetailAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         initView();

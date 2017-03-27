@@ -2,20 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:layout_margin="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:background="@drawable/corners_bg"
     android:padding="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/id_nearbysites_name"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:gravity="center"
+        android:layout_height="30dp"
         android:background="#ffffff"
-        android:textSize="15dp"
-        android:layout_marginBottom="10dp"
-        android:text="奥体中心" />
+        android:layout_marginBottom="5dp"
+        android:paddingRight="15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/id_nearbysites_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:background="#ffffff"
+            android:textSize="16dp"
+            android:text="奥体中心" />
+        <ImageView
+            android:id="@+id/id_nearbysites_color_img"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/air_quality_icon"
+            android:padding="3dp"/>
+        <TextView
+            android:id="@+id/id_nearbysites_quality"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#ffffff"
+            android:textSize="16dp"
+            android:text="优" />
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

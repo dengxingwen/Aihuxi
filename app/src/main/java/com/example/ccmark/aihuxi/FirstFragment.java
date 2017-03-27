@@ -106,10 +106,11 @@ public class FirstFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getCityAirData();
+                getData();
             }
         });
 
+        swipeRefreshLayout.setRefreshing(true);
         getData();
         return view;
     }
@@ -149,11 +150,11 @@ public class FirstFragment extends Fragment {
                         if ("0".equals(cityAirAll.getStatus())){
                             cityAirResult = cityAirAll.getResult();
                             getWeatherData();
-
+                            return;
                         }
-
+                        return;
                     }
-
+                    swipeRefreshLayout.setRefreshing(false);
 
                 }catch (IOException e) {
                     e.printStackTrace();
@@ -163,7 +164,7 @@ public class FirstFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

@@ -116,7 +116,7 @@ public class TrendFragment extends Fragment{
 //        lineChart.setDragDecelerationEnabled(true);//拖拽滚动时，手放开是否会持续滚动，默认是true（false是拖到哪是哪，true拖拽之后还会有缓冲）
 //        lineChart.setDragDecelerationFrictionCoef(0.99f);//与上面那个属性配合，持续滚动时的速度快慢，[0,1) 0代表立即停止。
 
-        //lineChart.setDrawBorders(false); //启用/禁用绘制图表边框（chart周围的线）。 
+        //lineChart.setDrawBorders(false); //启用/禁用绘制图表边框（chart周围的线）。
 
 
 

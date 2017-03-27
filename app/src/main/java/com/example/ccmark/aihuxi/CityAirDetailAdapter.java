@@ -1,23 +1,25 @@
 package com.example.ccmark.aihuxi;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 /**
  * Created by ccmark on 2017/3/10.
  */
-class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyViewHolder> implements View.OnClickListener{
+class CityAirDetailAdapter extends RecyclerView.Adapter<CityAirDetailAdapter.MyViewHolder> implements View.OnClickListener{
 
-    private static final String TAG = "CItyAirDetailAdapter";
+    private static final String TAG = "CityAirDetailAdapter";
 
     private QualityDetail qualityDetail;
 
 
-    public CItyAirDetailAdapter(QualityDetail qualityDetail) {
+    public CityAirDetailAdapter(QualityDetail qualityDetail) {
         this.qualityDetail = qualityDetail;
     }
 
@@ -44,6 +46,8 @@ class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyV
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tv_nearbysites_name.setText(qualityDetail.cityAirResult.getPosition().get(position).getPositionname());
+        holder.tv_color_img.setColorFilter(Color.parseColor(qualityDetail.cityAirResult.getPosition().get(position).getColor()));
+        holder.tv_quality.setText(qualityDetail.cityAirResult.getPosition().get(position).getQuality());
         holder.tv_aqi.setText(qualityDetail.cityAirResult.getPosition().get(position).getAqi());
         holder.tv_pm2_5.setText(qualityDetail.cityAirResult.getPosition().get(position).getPm2_5());
         holder.tv_pm10.setText(qualityDetail.cityAirResult.getPosition().get(position).getPm10());
@@ -69,12 +73,18 @@ class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyV
     @Override
     public int getItemCount() {
 
-        return 10;
+        if(qualityDetail.cityAirResult.getPosition().size() > 0){
+            return qualityDetail.cityAirResult.getPosition().size();
+        }
+
+        return 0;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_nearbysites_name;
+        ImageView tv_color_img;
+        TextView tv_quality;
         TextView tv_aqi;
         TextView tv_pm2_5;
         TextView tv_pm10;
@@ -86,6 +96,8 @@ class CItyAirDetailAdapter extends RecyclerView.Adapter<CItyAirDetailAdapter.MyV
             super(view);
 
             tv_nearbysites_name = (TextView) view.findViewById(R.id.id_nearbysites_name);
+            tv_color_img = (ImageView) view.findViewById(R.id.id_nearbysites_color_img);
+            tv_quality = (TextView)view.findViewById(R.id.id_nearbysites_quality);
             tv_aqi = (TextView) view.findViewById(R.id.id_nearbysites_aqi);
             tv_pm2_5 = (TextView) view.findViewById(R.id.id_nearbysites_pm2_5);
             tv_pm10 = (TextView) view.findViewById(R.id.id_nearbysites_pm10);
