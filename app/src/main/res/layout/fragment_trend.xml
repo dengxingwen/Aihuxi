@@ -5,27 +5,88 @@
     android:background="#f5f5f5"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/id_scrollview_trend"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:paddingTop="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart1"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_height="wrap_content"
+            android:background="#f5f5f5"
+            android:orientation="vertical"
+            android:paddingTop="0dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="AQI趋势图"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="14dp"/>
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="#ffffff"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="AQI趋势图"
+                android:textAlignment="center"
+                android:background="#ffffff"
+                android:textColor="#000000"
+                android:textSize="14dp" />
 
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart2"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="PM2.5趋势图"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:background="#ffffff"
+                android:textSize="14dp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart3"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="PM10趋势图"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:background="#ffffff"
+                android:textSize="14dp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart4"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="O₃趋势图"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:background="#ffffff"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
 </LinearLayout>

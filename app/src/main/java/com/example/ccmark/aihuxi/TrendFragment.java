@@ -7,11 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ccmark.NetApi.NetApi;
+import com.example.ccmark.api.HistoryApi;
+import com.example.ccmark.api.WeatherApi;
+import com.example.ccmark.bean.History;
+import com.example.ccmark.bean.WeatherAll;
+import com.example.ccmark.utils.Custom;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -29,12 +36,28 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TrendFragment extends Fragment{
+
+public class TrendFragment extends Fragment {
+
+    private static final String TAG = "TrendFragment";
 
     public static final int ThemeColor = 0xff3eb251;
 
     private LineChart lineChart;
+    private LineChart lineChart_pm2_5;
+    private LineChart lineChart_pm10;
+    private LineChart lineChart_O3;
+
+    protected String[] mHour = new String[]{
+            "1点", "2点", "3点", "4点", "5点", "6点", "7点", "8点", "9点", "10点", "11点", "12点", "13点", "14点", "15点", "16点", "17点", "18点", "19点", "20点", "21点", "22点", "23点", "24点"};
+
+    private History history;
 
     public static TrendFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -50,40 +73,77 @@ public class TrendFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_trend, null);
 
         lineChart = (LineChart) view.findViewById(R.id.chart1);
+        lineChart_pm2_5 = (LineChart) view.findViewById(R.id.chart2);
+        lineChart_pm10 = (LineChart) view.findViewById(R.id.chart3);
+        lineChart_O3 = (LineChart) view.findViewById(R.id.chart4);
 
-        createLineChart();
+        Log.i(TAG, "onResponse: start 001");
+
+
+        ArrayList<Entry> values1 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            values1.add(new Entry(i, 50));
+        }
+        createLineChart(values1, lineChart, "AQI");
+
+        ArrayList<Entry> values2 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            values2.add(new Entry(i, 85));
+        }
+        createLineChart(values2, lineChart_pm2_5, "PM2.5");
+
+        ArrayList<Entry> values3 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            values3.add(new Entry(i, 95));
+        }
+        createLineChart(values3, lineChart_pm10, "PM10");
+
+        ArrayList<Entry> values4 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            values4.add(new Entry(i, 35));
+        }
+        createLineChart(values4, lineChart_O3, "O₃");
+
+        getHistoryData();
+
 
         return view;
     }
 
-    public void createLineChart(){
+    public void createLineChart(ArrayList<Entry> values, LineChart lineChart, String lable) {
 
         XAxis xAxis = lineChart.getXAxis();
         //设置X轴的文字在底部
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
-        xAxis.setAxisMinimum(0f);//设置x轴的最小值
-        xAxis.setAxisMaximum(24f);//设置最大值
+//        xAxis.setAxisMinimum(0f);//设置x轴的最小值
+//        xAxis.setAxisMaximum(24f);//设置最大值
         xAxis.setAvoidFirstLastClipping(true);//图表将避免第一个和最后一个标签条目被减掉在图表或屏幕的边缘
-        //xAxis.setLabelRotationAngle(10f);//设置x轴标签的旋转角度
+        // xAxis.setLabelRotationAngle(10f);//设置x轴标签的旋转角度
 //        设置x轴显示标签数量  还有一个重载方法第二个参数为布尔值强制设置数量 如果启用会导致绘制点出现偏差
-        xAxis.setLabelCount(8);
+        xAxis.setLabelCount(11);
         xAxis.setDrawGridLines(false);
 //        xAxis.setTextColor(Color.BLUE);//设置轴标签的颜色
-//        xAxis.setTextSize(24f);//设置轴标签的大小
+        xAxis.setTextSize(10f);//设置轴标签的大小
 //        xAxis.setGridLineWidth(10f);//设置竖线大小
 //        xAxis.setGridColor(Color.RED);//设置竖线颜色
 //        xAxis.setAxisLineColor(Color.GREEN);//设置x轴线颜色
 //        xAxis.setAxisLineWidth(5f);//设置x轴线宽度
-//        xAxis.setValueFormatter();//格式化x轴标签显示字符
 
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mHour[(int) value % mHour.length];
+            }
+
+        });
 
 
         /**
          * Y轴默认显示左右两个轴线
          */
         //获取右边的轴线
-        YAxis rightAxis=lineChart.getAxisRight();
+        YAxis rightAxis = lineChart.getAxisRight();
         //设置图表右边的y轴禁用
         rightAxis.setEnabled(false);
         //获取左边的轴线
@@ -119,8 +179,7 @@ public class TrendFragment extends Fragment{
         //lineChart.setDrawBorders(false); //启用/禁用绘制图表边框（chart周围的线）。
 
 
-
-        Description description =new Description();
+        Description description = new Description();
         description.setText("");
         description.setTextColor(Color.GRAY);
         description.setTextSize(12);
@@ -135,51 +194,40 @@ public class TrendFragment extends Fragment{
         //lineChart.notifyDataSetChanged();//刷新数据
         //lineChart.invalidate();//重绘
 
-        ArrayList<Entry> values1 = new ArrayList<>();
-
-        values1.add(new Entry(0,55));
-        values1.add(new Entry(3,59));
-        values1.add(new Entry(6,63));
-        values1.add(new Entry(9,70));
-        values1.add(new Entry(12,80));
-        values1.add(new Entry(15,60));
-        values1.add(new Entry(18,43));
-        values1.add(new Entry(21,49));
-        values1.add(new Entry(24,50));
 
         //LineDataSet每一个对象就是一条连接线
-        LineDataSet set1;
-        LineDataSet set2;
+        LineDataSet set;
 
 
         //判断图表中原来是否有数据
         if (lineChart.getData() != null &&
                 lineChart.getData().getDataSetCount() > 0) {
             //获取数据1
-            set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
-            set1.setValues(values1);
+            set = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
+            set.setValues(values);
 
             //刷新数据
             lineChart.getData().notifyDataChanged();
             lineChart.notifyDataSetChanged();
+            lineChart.invalidate();
         } else {
             //设置数据1  参数1：数据源 参数2：图例名称
-            set1 = new LineDataSet(values1, "AQI");
-            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-            set1.setColor(ThemeColor);
-            set1.setCircleColor(ThemeColor);
-            set1.setLineWidth(1.5f);//设置线宽
-            set1.setCircleRadius(4f);//设置焦点圆心的大小
-            set1.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-            set1.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
-            set1.setHighlightEnabled(false);//是否禁用点击高亮线
-            set1.setHighLightColor(ThemeColor);//设置点击交点后显示交高亮线的颜色
-            set1.setValueTextSize(10f);//设置显示值的文字大小
-            set1.setDrawFilled(false);//设置禁用范围背景填充
+            set = new LineDataSet(values, lable);
+            set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            set.setColor(ThemeColor);
+            set.setCircleColor(ThemeColor);
+            set.setLineWidth(1.5f);//设置线宽
+            set.setCircleRadius(4f);//设置焦点圆心的大小
+            set.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
+            set.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
+            set.setHighlightEnabled(false);//是否禁用点击高亮线
+            set.setHighLightColor(ThemeColor);//设置点击交点后显示交高亮线的颜色
+            set.setValueTextSize(10f);//设置显示值的文字大小
+            set.setDrawFilled(false);//设置禁用范围背景填充
 
             //格式化显示数据
             final DecimalFormat mFormat = new DecimalFormat("###,###,##0");
-            set1.setValueFormatter(new IValueFormatter() {
+            set.setValueFormatter(new IValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                     return mFormat.format(value);
@@ -188,14 +236,14 @@ public class TrendFragment extends Fragment{
             if (Utils.getSDKInt() >= 18) {
                 // fill drawable only supported on api level 18 and above
                 Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
-                set1.setFillDrawable(drawable);//设置范围背景填充
+                set.setFillDrawable(drawable);//设置范围背景填充
             } else {
-                set1.setFillColor(Color.BLACK);
+                set.setFillColor(Color.BLACK);
             }
 
             //保存LineDataSet集合
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the datasets
+            dataSets.add(set); // add the datasets
             //创建LineData对象 属于LineChart折线图的数据集合
             LineData data = new LineData(dataSets);
 
@@ -204,9 +252,86 @@ public class TrendFragment extends Fragment{
             //绘制图表
             lineChart.invalidate();
 
-
         }
 
     }
+
+    public void getHistoryData() {
+
+        Log.i(TAG, "onResponse: getHistoryData 002");
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://jisuaqi.market.alicloudapi.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        HistoryApi historyApi = retrofit.create(HistoryApi.class);
+        Call<History> call = historyApi.getHistoryData(NetApi.APPCODE, "北京");
+        call.enqueue(new Callback<History>() {
+            @Override
+            public void onResponse(Call<History> call, Response<History> response) {
+
+                history = response.body();
+
+                Log.i(TAG, "onResponse:getAqi 003: " + history.getResult().getHour().get(0).getAqi());
+
+                updataCharts();
+
+            }
+
+            @Override
+            public void onFailure(Call<History> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    //更新图表
+    public void updataCharts() {
+
+        Log.i(TAG, "onResponse: updataCharts 004");
+
+        int hour = Custom.getHour(history.getResult().getHour().get(0).getTimepoint());
+
+        int[] xData = new int[12];
+
+        for (int i = 0; i < xData.length; i++) {
+            xData[i] = i+(hour-11);
+            if(xData[i]<0) {
+                xData[i]+=24;
+            }
+        }
+
+
+        ArrayList<Entry> values1 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getAqi());
+            values1.add(new Entry(xData[i], y_value));
+        }
+        createLineChart(values1, lineChart, "AQI");
+
+        ArrayList<Entry> values2 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm2_5());
+            values2.add(new Entry(xData[i], y_value));
+        }
+        createLineChart(values2, lineChart_pm2_5, "PM2.5");
+
+        ArrayList<Entry> values3 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm10());
+            values3.add(new Entry(xData[i], y_value));
+        }
+        createLineChart(values3, lineChart_pm10, "PM10");
+
+        ArrayList<Entry> values4 = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getO3());
+            values4.add(new Entry(xData[i], y_value));
+        }
+        createLineChart(values4, lineChart_O3, "O₃");
+    }
+
 
 }
