@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -87,7 +88,14 @@ public class FirstFragment extends Fragment {
                 android.R.color.holo_red_light,android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+
         mAdapter = new HomeAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new HomeAdapter.OnRecyclerViewItemClickListener() {

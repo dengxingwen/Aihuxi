@@ -9,11 +9,12 @@
     android:orientation="vertical"
     tools:context="com.example.ccmark.aihuxi.MainActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.example.ccmark.aihuxi.NoScrollViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/navigation"/>
+
 
 
     <android.support.design.widget.BottomNavigationView

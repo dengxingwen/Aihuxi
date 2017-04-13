@@ -57,6 +57,7 @@ public class TrendFragment extends Fragment {
     protected String[] mHour = new String[]{
             "1点", "2点", "3点", "4点", "5点", "6点", "7点", "8点", "9点", "10点", "11点", "12点", "13点", "14点", "15点", "16点", "17点", "18点", "19点", "20点", "21点", "22点", "23点", "24点"};
 
+
     private History history;
 
     public static TrendFragment newInstance(String info) {
@@ -84,25 +85,25 @@ public class TrendFragment extends Fragment {
         for (int i = 0; i < 12; i++) {
             values1.add(new Entry(i, 50));
         }
-        createLineChart(values1, lineChart, "AQI");
+        createLineChart(values1, lineChart, "AQI", 12);
 
         ArrayList<Entry> values2 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             values2.add(new Entry(i, 85));
         }
-        createLineChart(values2, lineChart_pm2_5, "PM2.5");
+        createLineChart(values2, lineChart_pm2_5, "PM2.5", 12);
 
         ArrayList<Entry> values3 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             values3.add(new Entry(i, 95));
         }
-        createLineChart(values3, lineChart_pm10, "PM10");
+        createLineChart(values3, lineChart_pm10, "PM10", 12);
 
         ArrayList<Entry> values4 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             values4.add(new Entry(i, 35));
         }
-        createLineChart(values4, lineChart_O3, "O₃");
+        createLineChart(values4, lineChart_O3, "O₃", 12);
 
         getHistoryData();
 
@@ -110,7 +111,7 @@ public class TrendFragment extends Fragment {
         return view;
     }
 
-    public void createLineChart(ArrayList<Entry> values, LineChart lineChart, String lable) {
+    public void createLineChart(ArrayList<Entry> values, LineChart lineChart, String lable, final int latesttime) {
 
         XAxis xAxis = lineChart.getXAxis();
         //设置X轴的文字在底部
@@ -124,7 +125,7 @@ public class TrendFragment extends Fragment {
         xAxis.setLabelCount(11);
         xAxis.setDrawGridLines(false);
 //        xAxis.setTextColor(Color.BLUE);//设置轴标签的颜色
-        xAxis.setTextSize(10f);//设置轴标签的大小
+        xAxis.setTextSize(9f);//设置轴标签的大小
 //        xAxis.setGridLineWidth(10f);//设置竖线大小
 //        xAxis.setGridColor(Color.RED);//设置竖线颜色
 //        xAxis.setAxisLineColor(Color.GREEN);//设置x轴线颜色
@@ -133,7 +134,15 @@ public class TrendFragment extends Fragment {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return mHour[(int) value % mHour.length];
+
+                int index = (int)value + (latesttime - 12);
+                if (index < 0){
+                    index += 24;
+                }
+
+                String xlableStr = mHour[index];
+
+                return xlableStr;
             }
 
         });
@@ -293,44 +302,44 @@ public class TrendFragment extends Fragment {
         Log.i(TAG, "onResponse: updataCharts 004");
 
         int hour = Custom.getHour(history.getResult().getHour().get(0).getTimepoint());
-
-        int[] xData = new int[12];
-
-        for (int i = 0; i < xData.length; i++) {
-            xData[i] = i+(hour-11);
-            if(xData[i]<0) {
-                xData[i]+=24;
-            }
-        }
+//
+//        int[] xData = new int[12];
+//
+//        for (int i = 0; i < xData.length; i++) {
+//            xData[i] = i+(hour-11);
+//            if(xData[i]<0) {
+//                xData[i]+=24;
+//            }
+//        }
 
 
         ArrayList<Entry> values1 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getAqi());
-            values1.add(new Entry(xData[i], y_value));
+            values1.add(new Entry(i, y_value));
         }
-        createLineChart(values1, lineChart, "AQI");
+        createLineChart(values1, lineChart, "AQI", hour);
 
         ArrayList<Entry> values2 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm2_5());
-            values2.add(new Entry(xData[i], y_value));
+            values2.add(new Entry(i, y_value));
         }
-        createLineChart(values2, lineChart_pm2_5, "PM2.5");
+        createLineChart(values2, lineChart_pm2_5, "PM2.5", hour);
 
         ArrayList<Entry> values3 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm10());
-            values3.add(new Entry(xData[i], y_value));
+            values3.add(new Entry(i, y_value));
         }
-        createLineChart(values3, lineChart_pm10, "PM10");
+        createLineChart(values3, lineChart_pm10, "PM10", hour);
 
         ArrayList<Entry> values4 = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getO3());
-            values4.add(new Entry(xData[i], y_value));
+            values4.add(new Entry(i, y_value));
         }
-        createLineChart(values4, lineChart_O3, "O₃");
+        createLineChart(values4, lineChart_O3, "O₃", hour);
     }
 
 

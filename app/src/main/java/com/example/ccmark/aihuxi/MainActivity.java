@@ -3,10 +3,13 @@ package com.example.ccmark.aihuxi;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.ccmark.adapter.ViewPagerAdapter;
 
@@ -15,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     BottomNavigationView bottomNavigationView;
-    ViewPager viewPager;
+    NoScrollViewPager viewPager;
     MenuItem prevMenuItem;
 
 
@@ -25,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         Log.d(TAG, "onCreate: ");
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        viewPager = (NoScrollViewPager) findViewById(R.id.viewpager);
+        viewPager.setScroll(false);
+        viewPager.setOffscreenPageLimit(2);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -72,15 +77,9 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
+
         });
 
-
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
 
         setupViewPager(viewPager);
     }
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(TrendFragment.newInstance("2"));
         adapter.addFragment(TopFragment.newInstance("3"));
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
+
     }
 
 
