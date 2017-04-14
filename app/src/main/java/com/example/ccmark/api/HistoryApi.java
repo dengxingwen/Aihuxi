@@ -12,6 +12,6 @@ import retrofit2.http.Query;
  */
 
 public interface HistoryApi {
-    @GET("/aqi/history")
+    @GET("aqi/history")
     Call<History> getHistoryData(@Header("Authorization") String authorization, @Query("city") String city);
 }
