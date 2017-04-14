@@ -1,6 +1,7 @@
 package com.example.ccmark.aihuxi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.api.AirApi;
@@ -22,6 +25,7 @@ import com.example.ccmark.bean.AirAll;
 import com.example.ccmark.bean.CityAirAll;
 import com.example.ccmark.bean.CityAirResult;
 import com.example.ccmark.bean.WeatherAll;
+import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -41,15 +45,26 @@ public class FirstFragment extends Fragment {
 
     private static final String TAG = "FirstFragment";
 
-    private RecyclerView mRecyclerView;
-    private HomeAdapter mAdapter;
-
     public CityAirAll cityAirAll;
     public CityAirResult cityAirResult;
 
     public SwipeRefreshLayout swipeRefreshLayout;
 
     public WeatherAll weatherAll;
+
+    private ArcProgress arcProgress;
+
+    private TextView tv_effect;
+    private TextView tv_measure;
+
+    private TextView tv_pm2_5;
+    private TextView tv_pm10;
+    private TextView tv_o3;
+    private TextView tv_no2;
+    private TextView tv_co;
+    private TextView tv_so2;
+
+    private Button loadmore_bt;
 
 
     public static FirstFragment newInstance(String info) {
@@ -72,7 +87,7 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         Log.d(TAG, "onDestroyView: ");
     }
-    
+
 
     @Nullable
     @Override
@@ -83,33 +98,34 @@ public class FirstFragment extends Fragment {
 
         initData();
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview);
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
+        arcProgress = (ArcProgress) view.findViewById(R.id.arc_progress);
 
-        mAdapter = new HomeAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new HomeAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int data) {
+        tv_effect = (TextView) view.findViewById(R.id.effect);
+        tv_measure = (TextView) view.findViewById(R.id.measure);
+        tv_pm2_5 = (TextView) view.findViewById(R.id.main_pm2_5);
+        tv_pm10 = (TextView) view.findViewById(R.id.main_pm10);
+        tv_o3 = (TextView) view.findViewById(R.id.main_O3);
+        tv_no2 = (TextView) view.findViewById(R.id.main_NO2);
+        tv_co = (TextView) view.findViewById(R.id.main_CO);
+        tv_so2 = (TextView) view.findViewById(R.id.main_SO2);
+        loadmore_bt = (Button) view.findViewById(R.id.loadmore_bt);
 
-                Intent intent = new Intent(getContext(),QualityDetail.class);
+        loadmore_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), QualityDetail.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("resultdata", cityAirResult);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
+
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -124,39 +140,54 @@ public class FirstFragment extends Fragment {
     }
 
 
-    public void getData(){
+    public void getData() {
 
         //获取城市空气质量数据
         getCityAirData();
 
     }
 
-    protected void initData()
-    {
+    protected void initData() {
         cityAirAll = new CityAirAll();
         cityAirResult = new CityAirResult();
 
     }
 
+    public void updataAirView() {
+        arcProgress.setProgress(Integer.parseInt(cityAirResult.getAqi()));
+        arcProgress.setFinishedStrokeColor(Color.parseColor(cityAirResult.getAqiinfo().getColor()));
+        tv_effect.setText(cityAirResult.getAqiinfo().getAffect());
+        tv_measure.setText(cityAirResult.getAqiinfo().getMeasure());
 
-    public void getCityAirData(){
+        tv_pm2_5.setText(cityAirResult.getPm2_5());
+        tv_pm10.setText(cityAirResult.getIpm10());
+        tv_o3.setText(cityAirResult.getO3());
+        tv_no2.setText(cityAirResult.getNo2());
+        tv_co.setText(cityAirResult.getCo());
+        tv_so2.setText(cityAirResult.getSo2());
+
+    }
+
+
+    public void getCityAirData() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://jisuaqi.market.alicloudapi.com")
                 .build();
 
         CityAirData cityAirData = retrofit.create(CityAirData.class);
-        Call<ResponseBody> call = cityAirData.getCityAirdata(NetApi.APPCODE,"北京");
+        Call<ResponseBody> call = cityAirData.getCityAirdata(NetApi.APPCODE, "北京");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
 
                     Gson gson = new Gson();
-                    if (response.code() == 200 ){
-                        cityAirAll = gson.fromJson(response.body().string(),CityAirAll.class);
-                        if ("0".equals(cityAirAll.getStatus())){
+                    if (response.code() == 200) {
+                        cityAirAll = gson.fromJson(response.body().string(), CityAirAll.class);
+                        if ("0".equals(cityAirAll.getStatus())) {
                             cityAirResult = cityAirAll.getResult();
+                            updataAirView();
                             getWeatherData();
                             return;
                         }
@@ -164,7 +195,7 @@ public class FirstFragment extends Fragment {
                     }
                     swipeRefreshLayout.setRefreshing(false);
 
-                }catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -179,7 +210,7 @@ public class FirstFragment extends Fragment {
 
     }
 
-    public void getWeatherData(){
+    public void getWeatherData() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ali-weather.showapi.com")
@@ -187,14 +218,20 @@ public class FirstFragment extends Fragment {
                 .build();
 
         WeatherApi weatherApi = retrofit.create(WeatherApi.class);
-        Call<WeatherAll> call = weatherApi.getCityWeatherData(NetApi.APPCODE,"北京");
+        Call<WeatherAll> call = weatherApi.getCityWeatherData(NetApi.APPCODE, "北京");
         call.enqueue(new Callback<WeatherAll>() {
             @Override
             public void onResponse(Call<WeatherAll> call, Response<WeatherAll> response) {
 
-                weatherAll = response.body();
-                System.out.println(weatherAll.getShowapi_res_code());
-                mAdapter.notifyDataSetChanged();
+                if (response.code() == 200) {
+                    weatherAll = response.body();
+                    System.out.println(weatherAll.getShowapi_res_code());
+                    Log.i(TAG, "getWeatherData: "+ weatherAll.getShowapi_res_code());
+
+                } else {
+
+                }
+
                 swipeRefreshLayout.setRefreshing(false);
 
             }
