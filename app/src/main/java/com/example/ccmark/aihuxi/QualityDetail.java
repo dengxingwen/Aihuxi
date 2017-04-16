@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.api.WeatherApi;
+import com.example.ccmark.base.BaseAppCompatActivity;
 import com.example.ccmark.bean.CityAirResult;
 import com.example.ccmark.bean.WeatherAll;
 
@@ -25,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ccmark on 2017/3/13.
  */
 
-public class QualityDetail extends AppCompatActivity {
+public class QualityDetail extends BaseAppCompatActivity {
 
     private TextView tv_city_name;
     private TextView tv_city_wendu;
@@ -48,9 +49,19 @@ public class QualityDetail extends AppCompatActivity {
     public CityAirResult cityAirResult;
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.activity_qualitydetail;
+    }
+
+    @Override
+    protected boolean isShowBacking() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qualitydetail);
+        getToolbarTitle().setText("周边空气详情");
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

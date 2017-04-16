@@ -163,7 +163,10 @@ public class FirstFragment extends Fragment {
         tv_pm10.setText(cityAirResult.getIpm10());
         tv_o3.setText(cityAirResult.getO3());
         tv_no2.setText(cityAirResult.getNo2());
-        tv_co.setText(cityAirResult.getCo());
+
+        float co_float = Float.parseFloat(cityAirResult.getCo());
+        co_float = (float) Math.round(co_float * 100)/100;
+        tv_co.setText(co_float + "");
         tv_so2.setText(cityAirResult.getSo2());
 
     }

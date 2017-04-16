@@ -14,11 +14,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.ccmark.adapter.ViewPagerAdapter;
+import com.example.ccmark.base.BaseAppCompatActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -27,10 +28,13 @@ public class MainActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+//        getToolbarTitle().setText("主界面");
+//        getSubTitle().setText("更多");
 
 
         Log.d(TAG, "onCreate: ");
@@ -48,12 +52,15 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.navigation_home:
                                 viewPager.setCurrentItem(0);
+                                setToolBarTitle("爱呼吸");
                                 break;
                             case R.id.navigation_trend:
                                 viewPager.setCurrentItem(1);
+                                setToolBarTitle("空气质量趋势图");
                                 break;
                             case R.id.navigation_top:
                                 viewPager.setCurrentItem(2);
+                                setToolBarTitle("排行榜");
                                 break;
                         }
                         return false;
@@ -87,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         setupViewPager(viewPager);
+    }
+
+    /**
+     * 设置不显示返回按钮
+     *
+     * @return
+     */
+    protected boolean isShowBacking() {
+        return false;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     private void setupViewPager(ViewPager viewPager) {

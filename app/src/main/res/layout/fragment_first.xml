@@ -70,6 +70,7 @@
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:text="详细数据"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="13dp" />
 
                     <LinearLayout
@@ -370,6 +371,7 @@
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:text="生活指导"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="13dp" />
 
                     <TextView
@@ -395,17 +397,17 @@
                 <info.hoang8f.widget.FButton
                     android:id="@+id/loadmore_bt"
                     android:layout_width="200dp"
-                    android:layout_height="44dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:text="查看周边空气"
                     android:textColor="#ffffff"
-                    fbutton:buttonColor="@color/fbutton_color_concrete"
+                    fbutton:buttonColor="@color/colorPrimary"
                     fbutton:cornerRadius="5dp"
-                    fbutton:shadowColor="@color/fbutton_color_asbestos"
+                    fbutton:shadowColor="@color/colorPrimary"
                     fbutton:shadowEnabled="true"
-                    fbutton:shadowHeight="5dp" />
+                    fbutton:shadowHeight="2dp" />
 
 
 
