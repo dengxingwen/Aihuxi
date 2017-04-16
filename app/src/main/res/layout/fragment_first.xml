@@ -361,8 +361,8 @@
                     android:layout_marginTop="6dp"
                     android:paddingBottom="6px"
                     android:background="#ffffff"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:orientation="vertical">
 
 
@@ -399,12 +399,12 @@
                     android:layout_width="200dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="40dp"
                     android:text="查看周边空气"
                     android:textColor="#ffffff"
                     fbutton:buttonColor="@color/colorPrimary"
-                    fbutton:cornerRadius="5dp"
+                    fbutton:cornerRadius="20dp"
                     fbutton:shadowColor="@color/colorPrimary"
                     fbutton:shadowEnabled="true"
                     fbutton:shadowHeight="2dp" />
