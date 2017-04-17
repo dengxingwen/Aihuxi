@@ -1,5 +1,8 @@
 package com.example.ccmark.aihuxi;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +35,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -44,6 +50,8 @@ public class FirstFragment extends Fragment {
 
 
     private static final String TAG = "FirstFragment";
+
+    private Timer timer;
 
     public CityAirAll cityAirAll;
     public CityAirResult cityAirResult;
@@ -154,8 +162,16 @@ public class FirstFragment extends Fragment {
     }
 
     public void updataAirView() {
-        arcProgress.setProgress(Integer.parseInt(cityAirResult.getAqi()));
+
+        final int aqi = Integer.parseInt(cityAirResult.getAqi());
+        ObjectAnimator anim = ObjectAnimator.ofInt(arcProgress, "progress", 0, aqi);
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(2000);
+        anim.start();
+
         arcProgress.setFinishedStrokeColor(Color.parseColor(cityAirResult.getAqiinfo().getColor()));
+
+
         tv_effect.setText(cityAirResult.getAqiinfo().getAffect());
         tv_measure.setText(cityAirResult.getAqiinfo().getMeasure());
 
@@ -165,7 +181,7 @@ public class FirstFragment extends Fragment {
         tv_no2.setText(cityAirResult.getNo2());
 
         float co_float = Float.parseFloat(cityAirResult.getCo());
-        co_float = (float) Math.round(co_float * 100)/100;
+        co_float = (float) Math.round(co_float * 100) / 100;
         tv_co.setText(co_float + "");
         tv_so2.setText(cityAirResult.getSo2());
 
@@ -229,7 +245,7 @@ public class FirstFragment extends Fragment {
                 if (response.code() == 200) {
                     weatherAll = response.body();
                     System.out.println(weatherAll.getShowapi_res_code());
-                    Log.i(TAG, "getWeatherData: "+ weatherAll.getShowapi_res_code());
+                    Log.i(TAG, "getWeatherData: " + weatherAll.getShowapi_res_code());
 
                 } else {
 
