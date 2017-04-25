@@ -60,10 +60,12 @@ public class FragTab2 extends Fragment {
     private LineChart lineChart_O3;
 
     private List<HistoryWeek> historyWeeks;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.trend_fragment2,null);
+        View view = inflater.inflate(R.layout.trend_fragment2, null);
+
 
         lineChart = (LineChart) view.findViewById(R.id.chart1);
         lineChart_pm2_5 = (LineChart) view.findViewById(R.id.chart2);
@@ -126,7 +128,7 @@ public class FragTab2 extends Fragment {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
 
-                String todayStr = Custom.getWeekDay(latesttime, week - (int) value -1);
+                String todayStr = Custom.getWeekDay(latesttime, week - (int) value - 1);
 
                 return todayStr;
             }
@@ -267,9 +269,9 @@ public class FragTab2 extends Fragment {
             public void onResponse(Call<List<HistoryWeek>> call, Response<List<HistoryWeek>> response) {
 
                 historyWeeks = response.body();
-                if (response.code() == 200){
+                if (response.code() == 200) {
                     updataCharts();
-                }else {
+                } else {
 
                 }
 
@@ -287,7 +289,7 @@ public class FragTab2 extends Fragment {
     public void updataCharts() {
 
 
-        String lastdata = historyWeeks.get(historyWeeks.size()-1).get日期();
+        String lastdata = historyWeeks.get(historyWeeks.size() - 1).get日期();
 
 
         ArrayList<Entry> values1 = new ArrayList<>();

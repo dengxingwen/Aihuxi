@@ -54,6 +54,7 @@
                         custom:arc_text_color="#5E5E5E"
                         custom:arc_text_size="45dp"
                         custom:arc_unfinished_color="#dfdfdf" />
+
                 </LinearLayout>
 
 
@@ -61,9 +62,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:paddingBottom="6dp"
                     android:background="#ffffff"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="6dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -359,11 +360,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:paddingBottom="6px"
                     android:background="#ffffff"
+                    android:orientation="vertical"
+                    android:paddingBottom="6px"
                     android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:orientation="vertical">
+                    android:paddingRight="20dp">
 
 
                     <TextView
@@ -378,16 +379,16 @@
                         android:id="@+id/effect"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="适合户外活动"
                         android:paddingBottom="5dp"
+                        android:text="适合户外活动"
                         android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/measure"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="空气优 可适当锻炼"
                         android:paddingBottom="5dp"
+                        android:text="空气优 可适当锻炼"
                         android:textSize="14dp" />
 
 
@@ -399,8 +400,8 @@
                     android:layout_width="200dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
                     android:layout_marginBottom="40dp"
+                    android:layout_marginTop="30dp"
                     android:text="查看周边空气"
                     android:textColor="#ffffff"
                     fbutton:buttonColor="@color/colorPrimary"
@@ -408,7 +409,6 @@
                     fbutton:shadowColor="@color/colorPrimary"
                     fbutton:shadowEnabled="true"
                     fbutton:shadowHeight="2dp" />
-
 
 
             </LinearLayout>

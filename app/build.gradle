@@ -47,4 +47,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.github.lzyzsd:circleprogress:1.2.1'
     compile 'info.hoang8f:fbutton:1.0.5'
+
 }

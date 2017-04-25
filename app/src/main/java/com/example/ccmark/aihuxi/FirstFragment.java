@@ -72,6 +72,7 @@ public class FirstFragment extends Fragment {
     private TextView tv_co;
     private TextView tv_so2;
 
+
     private Button loadmore_bt;
 
 
