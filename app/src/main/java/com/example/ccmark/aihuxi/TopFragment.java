@@ -19,6 +19,7 @@ import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.api.AirApi;
 import com.example.ccmark.bean.Air;
 import com.example.ccmark.bean.AirAll;
+import com.example.ccmark.bean.TopData;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -33,19 +34,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class TopFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private TopAirAdapter mAdapter;
-    public AirAll airall;
+    public TopData topData;
     public boolean canUpdata = false;
     public int segmentedGroupIndex = 0;
 
-    public List<Air> resultdata;
-    public List<Air> resultdata_AQI;
-    public List<Air> resultdata_PM2_5;
+    public List<TopData.ShowapiResBodyBean.ListBean> resultdata;
+    public List<TopData.ShowapiResBodyBean.ListBean> resultdata_AQI;
+    public List<TopData.ShowapiResBodyBean.ListBean> resultdata_PM2_5;
 
     public static TopFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -100,10 +102,10 @@ public class TopFragment extends Fragment {
     }
 
     public void initdata(){
-        airall = new AirAll();
-        resultdata = new ArrayList<Air>();
-        resultdata_AQI = new ArrayList<Air>();
-        resultdata_PM2_5 = new ArrayList<Air>();
+        topData = new TopData();
+        resultdata = new ArrayList<>();
+        resultdata_AQI = new ArrayList<>();
+        resultdata_PM2_5 = new ArrayList<>();
     }
 
 
@@ -115,42 +117,37 @@ public class TopFragment extends Fragment {
     public void getAirTopData(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ali-pm25.showapi.com")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         AirApi airapi = retrofit.create(AirApi.class);
-        Call<ResponseBody> call = airapi.getAirData(NetApi.APPCODE);
+        Call<TopData> call = airapi.getAirData(NetApi.APPCODE);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<TopData>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<TopData> call, Response<TopData> response) {
 
-                try {
+                if (response.code() == 200 ){
+                    topData = response.body();
+                    if (0 == topData.getShowapi_res_code()){
 
-                    Gson gson = new Gson();
-                    if (response.code() == 200 ){
-                        airall = gson.fromJson(response.body().string(),AirAll.class);
-                        if (0 == airall.getShowapi_res_code()){
-
-                            resultdata = airall.getShowapi_res_body().getList();
-                            resultdata_AQI = airall.getShowapi_res_body().getList();
+                            resultdata = topData.getShowapi_res_body().getList();
+                            resultdata_AQI = topData.getShowapi_res_body().getList();
                             resultdata_PM2_5.addAll(resultdata);
                             sortbyPM2_5();
 
                             canUpdata = true;
                             mAdapter.notifyDataSetChanged();
 
-                        }
-
                     }
 
-                }catch (IOException e) {
-                    e.printStackTrace();
                 }
+
 
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<TopData> call, Throwable t) {
 
             }
         });

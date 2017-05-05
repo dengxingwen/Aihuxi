@@ -164,7 +164,10 @@ public class FirstFragment extends Fragment {
 
     public void updataAirView() {
 
-        final int aqi = Integer.parseInt(cityAirResult.getAqi());
+        int aqi = Integer.parseInt(cityAirResult.getAqi());
+        if (aqi > 500){
+            aqi = 500;
+        }
         ObjectAnimator anim = ObjectAnimator.ofInt(arcProgress, "progress", 0, aqi);
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(2000);
