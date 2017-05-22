@@ -1,6 +1,7 @@
 package com.example.ccmark.bean;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.List;
 
@@ -63,9 +64,12 @@ public class TopData{
         }
 
         public static class ListBean implements Comparable<ListBean>{
+
             @Override
             public int compareTo(@NonNull ListBean o) {
-                return Integer.parseInt(this.pm2_5)  - Integer.parseInt(o.getPm2_5());
+
+                return Integer.parseInt(this.pm2_5) - Integer.parseInt(o.getPm2_5());
+
             }
 
             /**

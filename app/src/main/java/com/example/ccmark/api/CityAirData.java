@@ -12,5 +12,6 @@ import retrofit2.http.Query;
 
 public interface CityAirData {
     @GET("/aqi/query")
-    Call<ResponseBody> getCityAirdata(@Header("Authorization") String authorization,@Query("city") String city);
+    Call<ResponseBody> getCityAirdata(@Header("Authorization") String authorization,
+                                      @Query("city") String city);
 }

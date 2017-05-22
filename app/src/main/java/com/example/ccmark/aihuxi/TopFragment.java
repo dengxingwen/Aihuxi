@@ -63,7 +63,7 @@ public class TopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top, null);
 
-        SegmentedGroup segmented = (SegmentedGroup)view.findViewById(R.id.segmented);
+        SegmentedGroup segmented = (SegmentedGroup) view.findViewById(R.id.segmented);
         Button button1 = (Button) view.findViewById(R.id.button1);
         Button button2 = (Button) view.findViewById(R.id.button2);
 
@@ -101,7 +101,7 @@ public class TopFragment extends Fragment {
         return view;
     }
 
-    public void initdata(){
+    public void initdata() {
         topData = new TopData();
         resultdata = new ArrayList<>();
         resultdata_AQI = new ArrayList<>();
@@ -109,12 +109,19 @@ public class TopFragment extends Fragment {
     }
 
 
-    public void sortbyPM2_5(){
+    public void sortbyPM2_5() {
+        //移除空数据
+        for (int i = 0; i < resultdata_PM2_5.size(); i++) {
+            if (resultdata_PM2_5.get(i).getPm2_5().equals("_")) {
+                resultdata_PM2_5.remove(i);
+            }
+        }
+
         Collections.sort(resultdata_PM2_5);
     }
 
     //获取空气质量排行榜
-    public void getAirTopData(){
+    public void getAirTopData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ali-pm25.showapi.com")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -127,17 +134,24 @@ public class TopFragment extends Fragment {
             @Override
             public void onResponse(Call<TopData> call, Response<TopData> response) {
 
-                if (response.code() == 200 ){
+                if (response.code() == 200) {
                     topData = response.body();
-                    if (0 == topData.getShowapi_res_code()){
+                    if (0 == topData.getShowapi_res_code()) {
 
-                            resultdata = topData.getShowapi_res_body().getList();
-                            resultdata_AQI = topData.getShowapi_res_body().getList();
-                            resultdata_PM2_5.addAll(resultdata);
-                            sortbyPM2_5();
+                        resultdata = topData.getShowapi_res_body().getList();
+                        resultdata_AQI = topData.getShowapi_res_body().getList();
+                        //移除空数据
+                        for (int i = 0; i < resultdata_AQI.size(); i++) {
+                            if (resultdata_AQI.get(i).getPm2_5().equals("_")) {
+                                resultdata_AQI.remove(i);
+                            }
+                        }
 
-                            canUpdata = true;
-                            mAdapter.notifyDataSetChanged();
+                        resultdata_PM2_5.addAll(resultdata);
+                        sortbyPM2_5();
+
+                        canUpdata = true;
+                        mAdapter.notifyDataSetChanged();
 
                     }
 
