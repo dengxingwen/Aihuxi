@@ -270,9 +270,7 @@ public class FragTab1 extends Fragment {
             public void onResponse(Call<History> call, Response<History> response) {
 
                 history = response.body();
-
-                Log.i(TAG, "onResponse:getAqi 003: " + history.getResult().getHour().get(0).getAqi());
-
+                
                 updataCharts();
 
             }
