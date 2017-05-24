@@ -75,6 +75,31 @@ public final class Custom {
 
     }
 
+    /**
+     * 获取制定日期是几号
+     */
+
+    public static String getMonthDay(String datetime, int day) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date date = null;
+        try {
+            date = sdf.parse(datetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        cl.add(Calendar.DAY_OF_MONTH, -day);
+        date = cl.getTime();
+
+        SimpleDateFormat dateFm = new SimpleDateFormat("dd");
+
+        String month_day = dateFm.format(date);
+        return month_day;
+
+    }
+
+
 
     /**
      * 获取前x天日期

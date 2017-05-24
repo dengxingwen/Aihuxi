@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.aihuxi.R;
-import com.example.ccmark.api.HistoryApi;
-import com.example.ccmark.bean.History;
+import com.example.ccmark.api.HistoryMonthApi;
+import com.example.ccmark.api.HistoryWeekApi;
+import com.example.ccmark.bean.HistoryWeek;
 import com.example.ccmark.utils.Custom;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -33,6 +33,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,24 +45,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ccmark on 2017/4/14.
  */
 
-public class FragTab1 extends Fragment {
+public class FragTab3 extends Fragment {
 
-    private static final String TAG = "FragTab1";
+    private static final String TAG = "FragTab3";
 
     public static final int ThemeColor = 0xff3eb251;
+    public static final int month = 30;
 
     private LineChart lineChart;
     private LineChart lineChart_pm2_5;
     private LineChart lineChart_pm10;
     private LineChart lineChart_O3;
 
-    protected String[] mHour = new String[]{
-            "1点", "2点", "3点", "4点", "5点", "6点", "7点", "8点", "9点", "10点", "11点", "12点", "13点", "14点", "15点", "16点", "17点", "18点", "19点", "20点", "21点", "22点", "23点", "24点"};
-    private History history;
+    private List<HistoryWeek> historyWeeks;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.trend_fragment1,null);
+        View view = inflater.inflate(R.layout.trend_fragment3, null);
+
 
         lineChart = (LineChart) view.findViewById(R.id.chart1);
         lineChart_pm2_5 = (LineChart) view.findViewById(R.id.chart2);
@@ -72,35 +74,35 @@ public class FragTab1 extends Fragment {
 
 
         ArrayList<Entry> values1 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < month; i++) {
             values1.add(new Entry(i, 50));
         }
-        createLineChart(values1, lineChart, "AQI", 12);
+        createLineChart(values1, lineChart, "AQI", Custom.getNowDataStr());
 
         ArrayList<Entry> values2 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < month; i++) {
             values2.add(new Entry(i, 85));
         }
-        createLineChart(values2, lineChart_pm2_5, "PM2.5", 12);
+        createLineChart(values2, lineChart_pm2_5, "PM2.5", Custom.getNowDataStr());
 
         ArrayList<Entry> values3 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < month; i++) {
             values3.add(new Entry(i, 95));
         }
-        createLineChart(values3, lineChart_pm10, "PM10", 12);
+        createLineChart(values3, lineChart_pm10, "PM10", Custom.getNowDataStr());
 
         ArrayList<Entry> values4 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < month; i++) {
             values4.add(new Entry(i, 35));
         }
-        createLineChart(values4, lineChart_O3, "O₃", 12);
+        createLineChart(values4, lineChart_O3, "O₃", Custom.getNowDataStr());
 
         getHistoryData();
 
         return view;
     }
 
-    public void createLineChart(ArrayList<Entry> values, LineChart lineChart, String lable, final int latesttime) {
+    public void createLineChart(ArrayList<Entry> values, LineChart lineChart, String lable, final String latesttime) {
 
         XAxis xAxis = lineChart.getXAxis();
         //设置X轴的文字在底部
@@ -109,9 +111,9 @@ public class FragTab1 extends Fragment {
 //        xAxis.setAxisMinimum(0f);//设置x轴的最小值
 //        xAxis.setAxisMaximum(24f);//设置最大值
         xAxis.setAvoidFirstLastClipping(true);//图表将避免第一个和最后一个标签条目被减掉在图表或屏幕的边缘
-        // xAxis.setLabelRotationAngle(10f);//设置x轴标签的旋转角度
+        xAxis.setLabelRotationAngle(0f);//设置x轴标签的旋转角度
 //        设置x轴显示标签数量  还有一个重载方法第二个参数为布尔值强制设置数量 如果启用会导致绘制点出现偏差
-        xAxis.setLabelCount(11);
+        xAxis.setLabelCount(10);
         xAxis.setDrawGridLines(false);
 //        xAxis.setTextColor(Color.BLUE);//设置轴标签的颜色
         xAxis.setTextSize(9f);//设置轴标签的大小
@@ -124,14 +126,9 @@ public class FragTab1 extends Fragment {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
 
-                int index = (int)value + (latesttime - 12);
-                if (index < 0){
-                    index += 24;
-                }
+                String todayStr = Custom.getMonthDay(latesttime, month - (int) value - 1) + "号";
 
-                String xlableStr = mHour[index];
-
-                return xlableStr;
+                return todayStr;
             }
 
         });
@@ -164,12 +161,12 @@ public class FragTab1 extends Fragment {
 
         //设置与图表交互
         lineChart.setTouchEnabled(true); // 设置是否可以触摸
-        lineChart.setDragEnabled(false);// 是否可以拖拽
+        lineChart.setDragEnabled(true);// 是否可以拖拽
         lineChart.setScaleEnabled(false);// 是否可以缩放 x和y轴, 默认是true
-//        lineChart.setScaleXEnabled(true); //是否可以缩放 仅x轴
+        lineChart.setScaleXEnabled(true); //是否可以缩放 仅x轴
 //        lineChart.setScaleYEnabled(true); //是否可以缩放 仅y轴
         lineChart.setPinchZoom(false);  //设置x轴和y轴能否同时缩放。默认是否
-        lineChart.setDoubleTapToZoomEnabled(false);//设置是否可以通过双击屏幕放大图表。默认是true
+        lineChart.setDoubleTapToZoomEnabled(true);//设置是否可以通过双击屏幕放大图表。默认是true
 //        lineChart.setHighlightPerDragEnabled(true);//能否拖拽高亮线(数据点与坐标的提示线)，默认是true
 //        lineChart.setDragDecelerationEnabled(true);//拖拽滚动时，手放开是否会持续滚动，默认是true（false是拖到哪是哪，true拖拽之后还会有缓冲）
 //        lineChart.setDragDecelerationFrictionCoef(0.99f);//与上面那个属性配合，持续滚动时的速度快慢，[0,1) 0代表立即停止。
@@ -220,7 +217,7 @@ public class FragTab1 extends Fragment {
             set.setHighlightLineWidth(1.2f);//设置点击交点后显示高亮线宽
             set.setHighlightEnabled(true);//是否禁用点击高亮线
             set.setHighLightColor(ThemeColor);//设置点击交点后显示交高亮线的颜色
-            set.setValueTextSize(10f);//设置显示值的文字大小
+            set.setValueTextSize(8f);//设置显示值的文字大小
             set.setDrawFilled(false);//设置禁用范围背景填充
 
             //格式化显示数据
@@ -259,24 +256,27 @@ public class FragTab1 extends Fragment {
         Log.i(TAG, "onResponse: getHistoryData 002");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://jisuaqi.market.alicloudapi.com/")
+                .baseUrl("http://123.207.140.116:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        HistoryApi historyApi = retrofit.create(HistoryApi.class);
-        Call<History> call = historyApi.getHistoryData(NetApi.APPCODE, "北京");
-        call.enqueue(new Callback<History>() {
+        HistoryMonthApi historyMonthApi = retrofit.create(HistoryMonthApi.class);
+        Call<List<HistoryWeek>> call = historyMonthApi.getHistoryMonthData("北京", Custom.getNowDataMonthStr());
+        call.enqueue(new Callback<List<HistoryWeek>>() {
             @Override
-            public void onResponse(Call<History> call, Response<History> response) {
+            public void onResponse(Call<List<HistoryWeek>> call, Response<List<HistoryWeek>> response) {
 
-                history = response.body();
+                historyWeeks = response.body();
+                if (response.code() == 200) {
+                    updataCharts();
+                } else {
 
-                updataCharts();
+                }
 
             }
 
             @Override
-            public void onFailure(Call<History> call, Throwable t) {
+            public void onFailure(Call<List<HistoryWeek>> call, Throwable t) {
 
             }
         });
@@ -286,47 +286,37 @@ public class FragTab1 extends Fragment {
     //更新图表
     public void updataCharts() {
 
-        Log.i(TAG, "onResponse: updataCharts 004");
 
-        int hour = Custom.getHour(history.getResult().getHour().get(0).getTimepoint());
-//
-//        int[] xData = new int[12];
-//
-//        for (int i = 0; i < xData.length; i++) {
-//            xData[i] = i+(hour-11);
-//            if(xData[i]<0) {
-//                xData[i]+=24;
-//            }
-//        }
+        String lastdata = historyWeeks.get(historyWeeks.size() - 1).get日期();
 
 
         ArrayList<Entry> values1 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getAqi());
+        for (int i = 0; i < month; i++) {
+            float y_value = Float.parseFloat(historyWeeks.get(i).getAQI());
             values1.add(new Entry(i, y_value));
         }
-        createLineChart(values1, lineChart, "AQI", hour);
+        createLineChart(values1, lineChart, "AQI", lastdata);
 
         ArrayList<Entry> values2 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm2_5());
+        for (int i = 0; i < month; i++) {
+            float y_value = Float.parseFloat(historyWeeks.get(i).get_$PM25180());
             values2.add(new Entry(i, y_value));
         }
-        createLineChart(values2, lineChart_pm2_5, "PM2.5", hour);
+        createLineChart(values2, lineChart_pm2_5, "PM2.5", lastdata);
 
         ArrayList<Entry> values3 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getPm10());
+        for (int i = 0; i < month; i++) {
+            float y_value = Float.parseFloat(historyWeeks.get(i).getPM10());
             values3.add(new Entry(i, y_value));
         }
-        createLineChart(values3, lineChart_pm10, "PM10", hour);
+        createLineChart(values3, lineChart_pm10, "PM10", lastdata);
 
         ArrayList<Entry> values4 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            int y_value = Integer.parseInt(history.getResult().getHour().get(11 - i).getO3());
+        for (int i = 0; i < month; i++) {
+            float y_value = Float.parseFloat(historyWeeks.get(i).getO3());
             values4.add(new Entry(i, y_value));
         }
-        createLineChart(values4, lineChart_O3, "O₃", hour);
+        createLineChart(values4, lineChart_O3, "O₃", lastdata);
     }
 
 }

@@ -162,7 +162,7 @@ public class FragTab2 extends Fragment {
         leftAxis.setSpaceTop(50);
 
         //设置与图表交互
-        lineChart.setTouchEnabled(false); // 设置是否可以触摸
+        lineChart.setTouchEnabled(true); // 设置是否可以触摸
         lineChart.setDragEnabled(false);// 是否可以拖拽
         lineChart.setScaleEnabled(false);// 是否可以缩放 x和y轴, 默认是true
 //        lineChart.setScaleXEnabled(true); //是否可以缩放 仅x轴
@@ -214,10 +214,10 @@ public class FragTab2 extends Fragment {
             set.setColor(ThemeColor);
             set.setCircleColor(ThemeColor);
             set.setLineWidth(1.5f);//设置线宽
-            set.setCircleRadius(4f);//设置焦点圆心的大小
+            set.setCircleRadius(3f);//设置焦点圆心的大小
             set.enableDashedHighlightLine(10f, 5f, 0f);//点击后的高亮线的显示样式
-            set.setHighlightLineWidth(2f);//设置点击交点后显示高亮线宽
-            set.setHighlightEnabled(false);//是否禁用点击高亮线
+            set.setHighlightLineWidth(1.2f);//设置点击交点后显示高亮线宽
+            set.setHighlightEnabled(true);//是否禁用点击高亮线
             set.setHighLightColor(ThemeColor);//设置点击交点后显示交高亮线的颜色
             set.setValueTextSize(10f);//设置显示值的文字大小
             set.setDrawFilled(false);//设置禁用范围背景填充

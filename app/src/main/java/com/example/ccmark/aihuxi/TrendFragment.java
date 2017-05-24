@@ -14,6 +14,7 @@ import com.example.ccmark.adapter.TabPaagerAdapter;
 
 import com.example.ccmark.fragment.FragTab1;
 import com.example.ccmark.fragment.FragTab2;
+import com.example.ccmark.fragment.FragTab3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class TrendFragment extends Fragment {
     private static final String TAG = "TrendFragment";
 
     private TabLayout tabs;
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
     private List<String> mTitle = new ArrayList<String>();
     private List<Fragment> mFragment = new ArrayList<Fragment>();
 
@@ -46,6 +47,7 @@ public class TrendFragment extends Fragment {
 
         TabPaagerAdapter adapter = new TabPaagerAdapter(getFragmentManager(), mTitle, mFragment);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
         //为TabLayout设置ViewPager
         tabs.setupWithViewPager(viewPager);
         //使用ViewPager的适配器
@@ -58,12 +60,15 @@ public class TrendFragment extends Fragment {
     private void initView(View view) {
 
         tabs = (TabLayout) view.findViewById(R.id.tabs);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        mTitle.add("今日趋势图");
-        mTitle.add("7日趋势图");
+        viewPager = (NoScrollViewPager) view.findViewById(R.id.viewPager);
+        viewPager.setScroll(false);
+        mTitle.add("12小时趋势图");
+        mTitle.add("7天趋势图");
+        mTitle.add("30天趋势图");
 
         mFragment.add(new FragTab1());
         mFragment.add(new FragTab2());
+        mFragment.add(new FragTab3());
 
     }
 
