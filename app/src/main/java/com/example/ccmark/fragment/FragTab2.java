@@ -258,7 +258,7 @@ public class FragTab2 extends Fragment {
         Log.i(TAG, "onResponse: getHistoryData 002");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://123.207.140.116:8080/")
+                .baseUrl(NetApi.AliyunURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

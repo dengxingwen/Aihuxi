@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ccmark.NetApi.NetApi;
 import com.example.ccmark.aihuxi.R;
 import com.example.ccmark.api.HistoryMonthApi;
 import com.example.ccmark.api.HistoryWeekApi;
@@ -256,7 +257,7 @@ public class FragTab3 extends Fragment {
         Log.i(TAG, "onResponse: getHistoryData 002");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://123.207.140.116:8080/")
+                .baseUrl(NetApi.AliyunURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
