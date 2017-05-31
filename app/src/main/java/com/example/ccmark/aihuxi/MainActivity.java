@@ -1,5 +1,6 @@
 package com.example.ccmark.aihuxi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.ccmark.adapter.ViewPagerAdapter;
 import com.example.ccmark.base.BaseAppCompatActivity;
+import com.zaaach.citypicker.CityPickerActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,6 +29,24 @@ public class MainActivity extends BaseAppCompatActivity {
     NoScrollViewPager viewPager;
     MenuItem prevMenuItem;
 
+    FirstFragment firstFragment;
+
+
+    private static final int REQUEST_CODE_PICK_CITY = 0;
+
+
+    //重写onActivityResult方法
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
+            if (data != null){
+                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                Log.i(TAG, "onActivityResult: " + city);
+                firstFragment.updataCity(city);
+            }
+        }
+    }
+
 
 
     @Override
@@ -38,6 +58,8 @@ public class MainActivity extends BaseAppCompatActivity {
 
 
         Log.d(TAG, "onCreate: ");
+
+        firstFragment = new FirstFragment();
 
 
         viewPager = (NoScrollViewPager) findViewById(R.id.viewpager);
@@ -94,6 +116,14 @@ public class MainActivity extends BaseAppCompatActivity {
 
 
         setupViewPager(viewPager);
+
+
+    }
+
+    public void startCityPicker(){
+        //启动
+        startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+                REQUEST_CODE_PICK_CITY);
     }
 
     /**
@@ -113,7 +143,7 @@ public class MainActivity extends BaseAppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(FirstFragment.newInstance("1"));
+        adapter.addFragment(firstFragment);
         adapter.addFragment(TrendFragment.newInstance("2"));
         adapter.addFragment(TopFragment.newInstance("3"));
         viewPager.setAdapter(adapter);

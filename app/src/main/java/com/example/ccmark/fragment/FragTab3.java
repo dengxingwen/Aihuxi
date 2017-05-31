@@ -300,7 +300,7 @@ public class FragTab3 extends Fragment {
 
         ArrayList<Entry> values2 = new ArrayList<>();
         for (int i = 0; i < month; i++) {
-            float y_value = Float.parseFloat(historyWeeks.get(i).get_$PM25180());
+            float y_value = Float.parseFloat(historyWeeks.get(i).get_$PM2510());
             values2.add(new Entry(i, y_value));
         }
         createLineChart(values2, lineChart_pm2_5, "PM2.5", lastdata);
@@ -314,7 +314,7 @@ public class FragTab3 extends Fragment {
 
         ArrayList<Entry> values4 = new ArrayList<>();
         for (int i = 0; i < month; i++) {
-            float y_value = Float.parseFloat(historyWeeks.get(i).getO3());
+            float y_value = Float.parseFloat(historyWeeks.get(i).getO3_8h());
             values4.add(new Entry(i, y_value));
         }
         createLineChart(values4, lineChart_O3, "O₃", lastdata);

@@ -7,33 +7,32 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class HistoryWeek {
-
     /**
-     * NO2 : 61.8
-     * 范围 : 70~160
-     * O3 : 69
-     * 日期 : 2017-04-08
-     * PM2.5 : 77.7
-     * SO2 : 7.2
-     * 排名 : 295
-     * 质量等级 : 轻度污染
-     * AQI : 114
-     * PM10 : 139
-     * CO : 0.921
+     * NO2 : 46
+     * 日期 : 2017-05-24
+     * PM2.5 : 17
+     * SO2 : 4
+     * 排名 : 218
+     * 质量等级 : 良
+     * AQI : 82
+     * PM10 : 55
+     * O3_8h : 138
+     * CO : 0.4
      */
 
     private String NO2;
-    private String 范围;
-    private String O3;
     private String 日期;
     @SerializedName("PM2.5")
-    private String _$PM25180; // FIXME check this code
+    private String _$PM2510; // FIXME check this code
     private String SO2;
     private String 排名;
     private String 质量等级;
     private String AQI;
     private String PM10;
+    private String O3_8h;
     private String CO;
+
+
 
     public String getNO2() {
         return NO2;
@@ -41,22 +40,6 @@ public class HistoryWeek {
 
     public void setNO2(String NO2) {
         this.NO2 = NO2;
-    }
-
-    public String get范围() {
-        return 范围;
-    }
-
-    public void set范围(String 范围) {
-        this.范围 = 范围;
-    }
-
-    public String getO3() {
-        return O3;
-    }
-
-    public void setO3(String O3) {
-        this.O3 = O3;
     }
 
     public String get日期() {
@@ -67,12 +50,12 @@ public class HistoryWeek {
         this.日期 = 日期;
     }
 
-    public String get_$PM25180() {
-        return _$PM25180;
+    public String get_$PM2510() {
+        return _$PM2510;
     }
 
-    public void set_$PM25180(String _$PM25180) {
-        this._$PM25180 = _$PM25180;
+    public void set_$PM2510(String _$PM2510) {
+        this._$PM2510 = _$PM2510;
     }
 
     public String getSO2() {
@@ -115,6 +98,14 @@ public class HistoryWeek {
         this.PM10 = PM10;
     }
 
+    public String getO3_8h() {
+        return O3_8h;
+    }
+
+    public void setO3_8h(String O3_8h) {
+        this.O3_8h = O3_8h;
+    }
+
     public String getCO() {
         return CO;
     }
@@ -122,4 +113,6 @@ public class HistoryWeek {
     public void setCO(String CO) {
         this.CO = CO;
     }
+
+
 }

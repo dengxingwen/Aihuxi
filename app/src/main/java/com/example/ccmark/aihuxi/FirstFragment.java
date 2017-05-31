@@ -75,6 +75,8 @@ public class FirstFragment extends Fragment {
 
     private Button loadmore_bt;
 
+    private TextView cityname;
+
 
     public static FirstFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -106,6 +108,16 @@ public class FirstFragment extends Fragment {
         Log.d(TAG, "onCreateView: ");
 
         initData();
+
+        cityname = (TextView) view.findViewById(R.id.cityname);
+
+//        cityname.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                    MainActivity mainActivity = (MainActivity) getActivity();
+//                    mainActivity.startCityPicker();
+//            }
+//        });
 
         arcProgress = (ArcProgress) view.findViewById(R.id.arc_progress);
 
@@ -146,6 +158,10 @@ public class FirstFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         getData();
         return view;
+    }
+
+    public void updataCity(String cityname){
+        this.cityname.setText(cityname);
     }
 
 
